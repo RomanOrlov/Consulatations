@@ -1,4 +1,4 @@
-package com.consulatations;
+package com.consulatations.backend.entity;
 
 /**
  * Created by Роман on 31.01.2016.
@@ -9,6 +9,7 @@ public class Patient {
     private String caseNum = "42/342";
     private String telephone  = "+7 9244 1324";
     private String status = "Назначена";
+    private String sex = "";
 
     public Patient() {
     }
@@ -59,5 +60,13 @@ public class Patient {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

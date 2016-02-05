@@ -1,7 +1,7 @@
-package com.consulatations;
+package com.consulatations.view;
 
+import com.consulatations.backend.entity.Patient;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 
@@ -10,7 +10,7 @@ import com.vaadin.ui.*;
  */
 public class EditConsultationForm extends FormLayout{
     // TODO do something with buttons!
-    public EditConsultationForm(BeanItem<? extends Patient> beanItem,Window window) {
+    public EditConsultationForm(BeanItem<? extends Patient> beanItem, Window window) {
         setSpacing(true);
         setSizeUndefined();
         setMargin(true);
@@ -21,6 +21,7 @@ public class EditConsultationForm extends FormLayout{
         this.addComponent(fieldGroup.buildAndBind("№ Дела","caseNum"));
         this.addComponent(fieldGroup.buildAndBind("Телефон","telephone"));
         this.addComponent(fieldGroup.buildAndBind("Статус","status"));
+        this.addComponent(fieldGroup.buildAndBind("Пол","sex"));
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setSpacing(true);
         horizontalLayout.addComponent(new Button("Сохранить",event -> {

@@ -1,21 +1,15 @@
-package com.consulatations;
+package com.consulatations.view;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanContainer;
-import com.vaadin.data.util.BeanItem;
+import com.consulatations.backend.entity.Patient;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.Action;
 import com.vaadin.event.DataBoundTransferable;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
-import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
 import com.vaadin.event.dd.acceptcriteria.And;
 import com.vaadin.event.dd.acceptcriteria.Not;
 import com.vaadin.server.Sizeable;
-import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.*;
 
 import java.text.SimpleDateFormat;
@@ -56,8 +50,9 @@ public class ConsultationTable {
         treeTable.setColumnHeader("caseNum","Дело №");
         treeTable.setColumnHeader("telephone","Телефон");
         treeTable.setColumnHeader("status","Статус");
+        treeTable.setColumnHeader("sex","Пол");
         // Reorder it (this feature still possible inside app columnreorderallow)
-        treeTable.setVisibleColumns("time","name","caseNum","telephone","status");
+        treeTable.setVisibleColumns("time","name","caseNum","telephone","status","sex");
         // Filling with data
         Patient day = new Patient(format.format(date),"","","","");
         roots.add(day);
