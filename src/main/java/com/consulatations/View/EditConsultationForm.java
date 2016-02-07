@@ -1,6 +1,6 @@
 package com.consulatations.view;
 
-import com.consulatations.backend.entity.Patient;
+import com.consulatations.backend.entity.Consultation;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
@@ -10,7 +10,7 @@ import com.vaadin.ui.*;
  */
 public class EditConsultationForm extends FormLayout{
     // TODO do something with buttons!
-    public EditConsultationForm(BeanItem<? extends Patient> beanItem, Window window) {
+    public EditConsultationForm(BeanItem<? extends Consultation> beanItem, Window window) {
         setSpacing(true);
         setSizeUndefined();
         setMargin(true);

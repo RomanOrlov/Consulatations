@@ -1,6 +1,6 @@
 package com.consulatations.view;
 
-import com.consulatations.backend.entity.Patient;
+import com.consulatations.backend.entity.Consultation;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.Action;
 import com.vaadin.event.DataBoundTransferable;
@@ -21,30 +21,29 @@ import java.util.Date;
  * Created by Роман on 02.02.2016.
  */
 public class ConsultationTable {
-
     private static final Action ADD_ITEM_ACTION = new Action("Новая консультация");
     private static final Action REMOVE_ITEM_ACTION = new Action("Удалить консультацию");
     private static final Action EDIT_ITEM_ACTION = new Action("Редактировать");
     private static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy (EEEE)");
     private static final ArrayList<String> duty = new ArrayList<>(Arrays.asList("Очная консультация - ","РХ - ","Заочная консультация - ","Онкология - "));
-    private static final ArrayList<Patient> roots = new ArrayList<>();
+    private static final ArrayList<Consultation> roots = new ArrayList<>();
     private final ArrayList<String> doctorsName;
     public final TreeTable treeTable;
-    private final BeanItemContainer<Patient> patientBeanItemContainer = new BeanItemContainer<>(Patient.class);
+    private final BeanItemContainer<Consultation> patientBeanItemContainer = new BeanItemContainer<>(Consultation.class);
 
     public ConsultationTable(ArrayList<String> doctorsName,Date date) {
         this.doctorsName = doctorsName;
         for (int i=0;i<duty.size();i++) {
             doctorsName.set(i,duty.get(i)+doctorsName.get(i));
         }
-        treeTable = new TreeTable(format.format(date),patientBeanItemContainer);
+        treeTable = new TreeTable(format.format(date)+" - "+format.format(date),patientBeanItemContainer);
         treeTable.setWidth("100%");
         treeTable.setHeight("100%");
         treeTable.setSelectable(true);
         treeTable.setColumnCollapsingAllowed(true);
         treeTable.setColumnReorderingAllowed(true);
         treeTable.setDragMode(Table.TableDragMode.ROW);
-        //Rename columns (may cause errors if change Patient class)
+        //Rename columns (may cause errors if change Consultation class)
         treeTable.setColumnHeader("time","Время");
         treeTable.setColumnHeader("name","ФИО");
         treeTable.setColumnHeader("caseNum","Дело №");
@@ -54,19 +53,19 @@ public class ConsultationTable {
         // Reorder it (this feature still possible inside app columnreorderallow)
         treeTable.setVisibleColumns("time","name","caseNum","telephone","status","sex");
         // Filling with data
-        Patient day = new Patient(format.format(date),"","","","");
+        Consultation day = new Consultation(format.format(date),"","","","");
         roots.add(day);
         treeTable.addItem(day);
         // TODO perform some random data (like real)
         for (String s:doctorsName) {
-            Patient procedure = new Patient(s,"","","","");
+            Consultation procedure = new Consultation(s,"","","","");
             treeTable.addItem(procedure);
             treeTable.setParent(procedure,day);
             roots.add(procedure);
-            Patient patient = new Patient();
-            treeTable.addItem(patient);
-            treeTable.setChildrenAllowed(patient,false);
-            treeTable.setParent(patient,procedure);
+            Consultation consultation = new Consultation();
+            treeTable.addItem(consultation);
+            treeTable.setChildrenAllowed(consultation,false);
+            treeTable.setParent(consultation,procedure);
         }
         treeTable.addActionHandler(getActionHandler());
         treeTable.setDropHandler(getDropHandler());
@@ -80,10 +79,10 @@ public class ConsultationTable {
                                      final Object target) {
                 if (action == ADD_ITEM_ACTION) {
                     // Create new item
-                    Patient patient = new Patient("?","?","?","?","Не назначено");
-                    treeTable.addItem(patient);
-                    treeTable.setChildrenAllowed(patient, false);
-                    treeTable.setParent(patient,target);
+                    Consultation consultation = new Consultation("?","?","?","?","Не назначено");
+                    treeTable.addItem(consultation);
+                    treeTable.setChildrenAllowed(consultation, false);
+                    treeTable.setParent(consultation,target);
                 }  else if (action == REMOVE_ITEM_ACTION&&!roots.contains(target)) {
                     treeTable.removeItem(target);
                 } else if (action==EDIT_ITEM_ACTION) {

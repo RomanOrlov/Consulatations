@@ -3,18 +3,19 @@ package com.consulatations.backend.entity;
 /**
  * Created by Роман on 31.01.2016.
  */
-public class Patient {
+public class Consultation {
     private String time = "10-20";
     private String name = "Фёдор";
     private String caseNum = "42/342";
     private String telephone  = "+7 9244 1324";
+    private String type;
     private String status = "Назначена";
     private String sex = "";
 
-    public Patient() {
+    public Consultation() {
     }
 
-    public Patient(String time, String name, String caseNum, String telephone, String status) {
+    public Consultation(String time, String name, String caseNum, String telephone, String status) {
         this.time = time;
         this.name = name;
         this.caseNum = caseNum;
@@ -68,5 +69,13 @@ public class Patient {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
