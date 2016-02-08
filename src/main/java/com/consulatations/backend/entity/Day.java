@@ -8,6 +8,7 @@ public class Day {
     private String radiosurgery;
     private String ochnoe;
     private String zaochnoe;
+    private String oncology;
 
     public String getDay() {
         return day;
@@ -39,5 +40,13 @@ public class Day {
 
     public void setZaochnoe(String zaochnoe) {
         this.zaochnoe = zaochnoe;
+    }
+
+    public String getOncology() {
+        return oncology;
+    }
+
+    public void setOncology(String oncology) {
+        this.oncology = oncology;
     }
 }

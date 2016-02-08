@@ -3,7 +3,7 @@ package com.consulatations;
 /**
  * Created by Роман on 07.02.2016.
  */
-public class Simple {
+public class TestData {
     String name;
     String time;
     String caseNum;

@@ -3,14 +3,11 @@ package com.consulatations;
 import javax.servlet.annotation.WebServlet;
 
 import com.consulatations.backend.DB;
-import com.consulatations.view.CalendarView;
 import com.consulatations.view.ConsultationView;
-import com.consulatations.view.LoginView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.sqlcontainer.SQLContainer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -31,15 +28,15 @@ public class App extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         try (Connection connection = DB.getConnection()){
             QueryRunner qr = new QueryRunner();
-            BeanListHandler<Simple> handler = new BeanListHandler<>(Simple.class);
-            Collection<Simple> simples = qr.query(connection, "select * from sys.consl", handler);
+            BeanListHandler<TestData> handler = new BeanListHandler<>(TestData.class);
+            Collection<TestData> simples = qr.query(connection, "select * from sys.consl", handler);
             System.out.println(simples.size());
-            for (Simple s1: simples) {
+            for (TestData s1: simples) {
                 System.out.println(s1.getName()+" "+s1.getTime());
             }
-            BeanItemContainer<Simple> beanItemContainer = new BeanItemContainer<>(Simple.class,simples);
+            BeanItemContainer<TestData> beanItemContainer = new BeanItemContainer<>(TestData.class,simples);
             Table table = new Table("whatitis",beanItemContainer);
-            Simple simple1 = new Simple();
+            TestData simple1 = new TestData();
             beanItemContainer.addItem(simple1);
             setContent(table);
             qr.update(connection,"INSERT INTO sys.consl (`NAME`, `TIME`) VALUES ('1', '33')");
@@ -49,10 +46,7 @@ public class App extends UI {
 
 
         new Navigator(this,this);
-        getNavigator().addView(LoginView.NAME,LoginView.class);
         getNavigator().addView(ConsultationView.NAME,ConsultationView.class);
-        getNavigator().addView(CalendarView.NAME,CalendarView.class);
-        getNavigator().navigateTo(LoginView.NAME);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
