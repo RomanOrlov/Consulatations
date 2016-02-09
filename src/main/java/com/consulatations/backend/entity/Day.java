@@ -10,6 +10,16 @@ public class Day {
     private String zaochnoe;
     private String oncology;
 
+    public Day() {
+    }
+
+    public Day(String radiosurgery, String ochnoe, String zaochnoe, String oncology) {
+        this.radiosurgery = radiosurgery;
+        this.ochnoe = ochnoe;
+        this.zaochnoe = zaochnoe;
+        this.oncology = oncology;
+    }
+
     public String getDay() {
         return day;
     }

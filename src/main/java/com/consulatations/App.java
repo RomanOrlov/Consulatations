@@ -3,6 +3,7 @@ package com.consulatations;
 import javax.servlet.annotation.WebServlet;
 
 import com.consulatations.backend.DB;
+import com.consulatations.presenter.ConsultationPresenter;
 import com.consulatations.view.ConsultationView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -24,8 +25,9 @@ import java.util.Collection;
 @Theme("mytheme")
 @Widgetset("com.consulatations.MyAppWidgetset")
 public class App extends UI {
+    public static final String CONSULTATION_VIEW = "consultation";
     @Override
-    protected void init(VaadinRequest vaadinRequest) {
+    protected void init(VaadinRequest vaadinRequest) {/*
         try (Connection connection = DB.getConnection()){
             QueryRunner qr = new QueryRunner();
             BeanListHandler<TestData> handler = new BeanListHandler<>(TestData.class);
@@ -44,9 +46,11 @@ public class App extends UI {
             System.out.println(ex.getMessage());
         }
 
-
-        new Navigator(this,this);
-        getNavigator().addView(ConsultationView.NAME,ConsultationView.class);
+*/
+        //new Navigator(this,this);
+        //UI.getCurrent().getNavigator().addView(CONSULTATION_VIEW,ConsultationView.class);
+        ConsultationPresenter presenter = new ConsultationPresenter();
+        setContent(presenter.view.treeTable);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

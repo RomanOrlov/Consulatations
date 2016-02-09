@@ -25,7 +25,8 @@ public class EditConsultationForm extends FormLayout{
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setSpacing(true);
         horizontalLayout.addComponent(new Button("Сохранить",event -> {
-            try {fieldGroup.commit();}
+            try {fieldGroup.commit();
+            window.close();}
         catch (FieldGroup.CommitException ex) {ex.getStackTrace();}}));
         horizontalLayout.addComponent(new Button("Отмена",event ->  window.close()));
         horizontalLayout.addComponent(new Button("Сброс",event -> fieldGroup.discard()));

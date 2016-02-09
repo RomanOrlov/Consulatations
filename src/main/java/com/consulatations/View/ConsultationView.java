@@ -13,6 +13,7 @@ import java.util.Date;
  * Created by Роман on 08.02.2016.
  */
 public class ConsultationView extends CustomComponent implements View {
+
     public final Button calendarButton = new Button("Календарь");
     public final TreeTable treeTable = new TreeTable("Расписание консультаций");
     {
@@ -34,19 +35,18 @@ public class ConsultationView extends CustomComponent implements View {
         treeTable.setColumnHeader("status","Статус");
         treeTable.setColumnHeader("sex","Пол");
         treeTable.addActionHandler(presenter);
-        treeTable.addActionHandler(presenter);
+        treeTable.setDropHandler(presenter);
         treeTable.setCellStyleGenerator((treeTable,itemId,propertyId)->treeTable.getItem(itemId).getItemProperty("status").getValue().equals("Не назначено")?"highlight-red":null);
         calendarButton.addClickListener(presenter);
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        ArrayList<String> doctorsName = new ArrayList<>(Arrays.asList("Осипов","Маряшев","Осинов","Петрухин","Голанов","Банов"));
-        ConsultationTable table = new ConsultationTable(doctorsName,new Date());
+        System.out.println("@FDSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+        //ArrayList<String> doctorsName = new ArrayList<>(Arrays.asList("Осипов","Маряшев","Осинов","Петрухин","Голанов","Банов"));
         //Button toCalendar = new Button("Календарь", clickEvent -> getUI().getNavigator().navigateTo(CalendarView.NAME));
-        VerticalLayout layout = new VerticalLayout(table.treeTable);
-        setCompositionRoot(layout);
-
+        //VerticalLayout layout = new VerticalLayout();
+        //setCompositionRoot(layout);
 
     }
 }
