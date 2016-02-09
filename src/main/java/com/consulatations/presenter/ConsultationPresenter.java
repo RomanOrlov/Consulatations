@@ -1,6 +1,5 @@
 package com.consulatations.presenter;
 
-import com.consulatations.BaseMVP.BasePresenter;
 import com.consulatations.backend.ConsultationManager;
 import com.consulatations.backend.SheduleManager;
 import com.consulatations.backend.entity.Consultation;
