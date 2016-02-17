@@ -25,6 +25,7 @@ public class DB {
             }
         } catch (ClassNotFoundException ex) {
             Logger.getGlobal().severe("Can't load mysql driver");
+            System.out.println("Connection to DB error!");
         }
         return null;
     }

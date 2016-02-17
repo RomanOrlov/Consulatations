@@ -1,10 +1,12 @@
 package com.consulatations.backend.entity;
 
+import java.util.Date;
+
 /**
  * Created by Роман on 07.02.2016.
  */
 public class Day {
-    private String day;
+    private Date day;
     private String radiosurgery;
     private String ochnoe;
     private String zaochnoe;
@@ -20,11 +22,11 @@ public class Day {
         this.oncology = oncology;
     }
 
-    public String getDay() {
+    public Date getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Date day) {
         this.day = day;
     }
 

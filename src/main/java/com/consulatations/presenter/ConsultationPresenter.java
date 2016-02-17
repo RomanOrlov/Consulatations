@@ -1,9 +1,11 @@
 package com.consulatations.presenter;
 
 import com.consulatations.backend.ConsultationManager;
+import com.consulatations.backend.DoctorsManager;
 import com.consulatations.backend.SheduleManager;
 import com.consulatations.backend.entity.Consultation;
 import com.consulatations.backend.entity.Day;
+import com.consulatations.backend.entity.Doctor;
 import com.consulatations.model.ConsultationModel;
 import com.consulatations.view.ConsultationView;
 import com.consulatations.view.EditConsultationForm;
@@ -30,8 +32,9 @@ import java.util.Date;
 public class ConsultationPresenter
         implements Action.Handler, Button.ClickListener, DropHandler {
     public  ConsultationModel model;
-    private ConsultationManager consultationManager;
-    private SheduleManager  sheduleManager;
+    public ConsultationManager consultationManager = new ConsultationManager();
+    public SheduleManager  sheduleManager = new SheduleManager();
+    public DoctorsManager doctorsManager = new DoctorsManager();
     public ConsultationView view;
     private static final Action ADD_ITEM_ACTION = new Action("Новая консультация");
     private static final Action REMOVE_ITEM_ACTION = new Action("Удалить консультацию");
@@ -40,54 +43,60 @@ public class ConsultationPresenter
     private static final Action ADD_DOCTOR = new Action("Добавить врача");
     private static final Action UNKNOWN_TARGET = new Action("Неизвестный элемент");
     private static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy (EEEE)");
-    private static final ArrayList<String> doctorsName = new ArrayList<>(Arrays.asList("Осипов","Маряшев","Осинов","Петрухин","Голанов","Банов"));
+    private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH-mm");
+    private ArrayList<Doctor> doctorsName;
     private ArrayList<Consultation> daysList = new ArrayList<>();
     private ArrayList<Consultation> activites = new ArrayList<>();
+    private ArrayList<Consultation> consultations = new ArrayList<>();
     private ArrayList<Day> shedule = new ArrayList<>();
 
-    public ConsultationPresenter() {
+
+    public ConsultationPresenter(ConsultationView view) {
+        // Загружаем shedule на 30 дней
         model = new ConsultationModel();
-        view = new ConsultationView(this);
-        //при загрузке по дефолту берём 7 дней
-        /*model.consultationContainer.addAll(consultationManager.listPatients(new  java.sql.Date(0),new  java.sql.Date(0)));
-        shedule.addAll(sheduleManager.listPatients(new  java.sql.Date(0),new  java.sql.Date(0)));*/
-        long today = new Date().getTime();
-        long oneday = 1000*3600*24;
-        for (int i=0;i<7;i++) {
-            Consultation day = new Consultation(format.format(new Date(today+i*oneday)),"","","","");
-            daysList.add(day);
-            model.consultationContainer.addBean(day);
-        }
-        Day testDay = new Day("Маряшев","Соловьев","Рябин","Колбаскин");
-        shedule.add(testDay);
-        if (shedule.size()>0) {
-            Day zeroday = shedule.get(0);
-            Consultation ochno = new Consultation("Очная консультация - "+zeroday.getOchnoe(),"","","","");
-            Consultation zaochno = new Consultation("Заочная консультация - "+zeroday.getZaochnoe(),"","","","");
-            Consultation radiosurgery = new Consultation("РХ - "+zeroday.getRadiosurgery(),"","","","");
-            Consultation oncology = new Consultation("Онкология - "+zeroday.getOncology(),"","","","");
-            activites.add(ochno);
-            activites.add(zaochno);
-            activites.add(radiosurgery);
-            activites.add(oncology);
+        this.view = view;
+        view.treeTable.setContainerDataSource(model.consultationContainer);
+        shedule = new ArrayList<>(sheduleManager.listShedule(new Date(new Date().getTime()-1000*3600*24*10),new Date(new Date().getTime()+1000*3600*24*10)));
+        doctorsName = new ArrayList<>(doctorsManager.listDoctors());
+        for (Day day : shedule) {
+            Consultation dayBean = new Consultation(day.getDay(),format.format(day.getDay()),"","","","");
+            daysList.add(dayBean);
+            model.consultationContainer.addBean(dayBean);
+            Consultation ochno = new Consultation(day.getDay(),"Очная консультация - "+day.getOchnoe(),"","","","");
+            Consultation zaochno = new Consultation(day.getDay(),"Заочная консультация - "+day.getZaochnoe(),"","","","");
+            Consultation radiosurgery = new Consultation(day.getDay(),"РХ - "+day.getRadiosurgery(),"","","","");
+            Consultation oncology = new Consultation(day.getDay(),"Онкология - "+day.getOncology(),"","","","");
+            activites.addAll(Arrays.asList(ochno,zaochno,radiosurgery,oncology));
             model.consultationContainer.addAll(Arrays.asList(ochno,zaochno,radiosurgery,oncology));
-            view.treeTable.setParent(ochno,daysList.get(0));
-            view.treeTable.setParent(zaochno,daysList.get(0));
-            view.treeTable.setParent(radiosurgery,daysList.get(0));
-            view.treeTable.setParent(oncology,daysList.get(0));
+            view.treeTable.setParent(ochno,dayBean);
+            view.treeTable.setParent(zaochno,dayBean);
+            view.treeTable.setParent(radiosurgery,dayBean);
+            view.treeTable.setParent(oncology,dayBean);
         }
-        // Тупое заполнение данными, пока без БД
-        for (int i=0;i<4;i++) {
-            Consultation consultation = new Consultation();
-            model.consultationContainer.addBean(consultation);
-            view.treeTable.setChildrenAllowed(consultation,false);
-            view.treeTable.setParent(consultation,activites.get(i));
+
+        consultations = new ArrayList<>(consultationManager.listConsultations(new Date(new Date().getTime()-1000*3600*24*10),new Date(new Date().getTime()+1000*3600*24*10)));
+        for (Consultation consultation : consultations) {
+            for (Consultation act: activites) {
+                if (act.getDisplayedTime().startsWith(consultation.getType())&&
+                        act.getTime().getDay()==consultation.getTime().getDay()
+                        &&act.getTime().getMonth()==consultation.getTime().getMonth()) {
+                    model.consultationContainer.addBean(consultation);
+                    view.treeTable.setChildrenAllowed(consultation,false);
+                    view.treeTable.setParent(consultation,act);
+                    consultation.setDisplayedTime(formatTime.format(consultation.getTime()));
+                    break;
+                }
+            }
         }
     }
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
+        Date from = view.from.getValue();
+        Date to = view.to.getValue();
+        if (from!=null&&to!=null) {
 
+        }
     }
 
     @Override
@@ -149,7 +158,7 @@ public class ConsultationPresenter
         } else if (action==ADD_DOCTOR) {
             Window window = new Window("Добавить врача");
             ListSelect doctorSelect = new ListSelect();
-            BeanItemContainer<String> stringBeanItemContainer = new BeanItemContainer<>(String.class,doctorsName);
+            BeanItemContainer<Doctor> stringBeanItemContainer = new BeanItemContainer<>(Doctor.class,doctorsName);
             doctorSelect.setContainerDataSource(stringBeanItemContainer);
             doctorSelect.addValueChangeListener(listener ->{
                 String selected = (String)listener.getProperty().getValue();

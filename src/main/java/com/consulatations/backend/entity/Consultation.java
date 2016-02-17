@@ -1,33 +1,53 @@
 package com.consulatations.backend.entity;
 
+import java.util.Date;
+
 /**
  * Created by Роман on 31.01.2016.
  */
 public class Consultation {
-    private String time = "10-20";
+    private Date time = new Date();
+    private String displayedTime = "";
     private String name = "Фёдор";
     private String caseNum = "42/342";
     private String telephone  = "+7 9244 1324";
-    private String type;
+    private String type = "";
     private String status = "Назначена";
     private String sex = "";
 
     public Consultation() {
     }
 
-    public Consultation(String time, String name, String caseNum, String telephone, String status) {
+    public Consultation(Date time,String displayedTime, String name, String caseNum, String telephone, String status) {
         this.time = time;
+        this.displayedTime = displayedTime;
         this.name = name;
         this.caseNum = caseNum;
         this.telephone = telephone;
         this.status = status;
     }
 
-    public String getTime() {
+    public Consultation(String type, String name, String caseNum, String telephone, String status) {
+        this.type = type;
+        this.name = name;
+        this.caseNum = caseNum;
+        this.telephone = telephone;
+        this.status = status;
+    }
+
+    public String getDisplayedTime() {
+        return displayedTime;
+    }
+
+    public void setDisplayedTime(String displayedTime) {
+        this.displayedTime = displayedTime;
+    }
+
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

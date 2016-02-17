@@ -4,9 +4,11 @@ import com.consulatations.backend.entity.Consultation;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created by Роман on 07.02.2016.
@@ -14,7 +16,9 @@ import java.util.Collection;
 // Тянет данные из базы о консультациях
 public class ConsultationManager {
 
-    public Collection<? extends Consultation> listPatients(Date from,Date to) {
+    private static final SimpleDateFormat simpleDateFormat= new SimpleDateFormat("yyyy-MM-dd");
+
+    public Collection<Consultation> listConsultations(Date from, Date to) {
         try (
                 Connection con = DB.getConnection()
         ) {
@@ -33,8 +37,8 @@ public class ConsultationManager {
             return consultationList;*/
             QueryRunner qr = new QueryRunner();
             BeanListHandler<Consultation> handler = new BeanListHandler<>(Consultation.class);
-            // TODO Выбор строк с from до to (Даты)
-            return qr.query(con, "select * from ", handler);
+            System.out.println(String.format("select * from sys.consultations where time BETWEEN '%s' AND '%s'",simpleDateFormat.format(from),simpleDateFormat.format(to)));
+            return qr.query(con, String.format("select * from sys.consultations where  time BETWEEN '%s' AND '%s'",simpleDateFormat.format(from),simpleDateFormat.format(to)), handler);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
