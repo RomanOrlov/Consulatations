@@ -73,8 +73,10 @@ public class ConsultationPresenter
             view.treeTable.setParent(radiosurgery,dayBean);
             view.treeTable.setParent(oncology,dayBean);
         }
-
-        consultations = new ArrayList<>(consultationManager.listConsultations(new Date(new Date().getTime()-1000*3600*24*10),new Date(new Date().getTime()+1000*3600*24*10)));
+        Date date = new Date();
+        date.setMonth(0);
+        date.setDate(0);
+        consultations = new ArrayList<>(consultationManager.listConsultations(date,new Date()));
         for (Consultation consultation : consultations) {
             for (Consultation act: activites) {
                 if (act.getDisplayedTime().startsWith(consultation.getType())&&
