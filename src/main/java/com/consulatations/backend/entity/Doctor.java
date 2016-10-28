@@ -1,8 +1,5 @@
 package com.consulatations.backend.entity;
 
-/**
- * Created by Роман on 10.02.2016.
- */
 public class Doctor {
     private String doctor;
 

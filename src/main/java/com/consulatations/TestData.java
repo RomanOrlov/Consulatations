@@ -1,13 +1,10 @@
 package com.consulatations;
 
-/**
- * Created by Роман on 07.02.2016.
- */
 public class TestData {
-    String name;
-    String time;
-    String caseNum;
-    String sex;
+    private String name;
+    private String time;
+    private String caseNum;
+    private String sex;
 
     public String getName() {
         return name;

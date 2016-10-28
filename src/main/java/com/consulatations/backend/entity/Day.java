@@ -2,9 +2,6 @@ package com.consulatations.backend.entity;
 
 import java.util.Date;
 
-/**
- * Created by Роман on 07.02.2016.
- */
 public class Day {
     private Date day;
     private String radiosurgery;

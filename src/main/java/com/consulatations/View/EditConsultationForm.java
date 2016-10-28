@@ -3,33 +3,37 @@ package com.consulatations.view;
 import com.consulatations.backend.entity.Consultation;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Window;
 
-/**
- * Created by Роман on 03.02.2016.
- */
-public class EditConsultationForm extends FormLayout{
-    // TODO do something with buttons!
+public class EditConsultationForm extends FormLayout {
+
     public EditConsultationForm(BeanItem<? extends Consultation> beanItem, Window window) {
         setSpacing(true);
-        setSizeUndefined();
         setMargin(true);
+        setSizeUndefined();
         FieldGroup fieldGroup = new FieldGroup(beanItem);
         fieldGroup.setBuffered(true);
-        this.addComponent(fieldGroup.buildAndBind("Время","time"));
-        this.addComponent(fieldGroup.buildAndBind("ФИО","name"));
-        this.addComponent(fieldGroup.buildAndBind("№ Дела","caseNum"));
-        this.addComponent(fieldGroup.buildAndBind("Телефон","telephone"));
-        this.addComponent(fieldGroup.buildAndBind("Статус","status"));
-        this.addComponent(fieldGroup.buildAndBind("Пол","sex"));
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        this.addComponents(fieldGroup.buildAndBind("Время", "time"),
+                fieldGroup.buildAndBind("ФИО", "name"),
+                fieldGroup.buildAndBind("№ Дела", "caseNum"),
+                fieldGroup.buildAndBind("Телефон", "telephone"),
+                fieldGroup.buildAndBind("Статус", "status"),
+                fieldGroup.buildAndBind("Пол", "sex"));
+        Button saveButton = new Button("Сохранить", event -> {
+            try {
+                fieldGroup.commit();
+                window.close();
+            } catch (FieldGroup.CommitException ex) {
+                ex.getStackTrace();
+            }
+        });
+        Button cancelButton = new Button("Отмена", event -> window.close());
+        Button discardButton = new Button("Сброс", event -> fieldGroup.discard());
+        HorizontalLayout horizontalLayout = new HorizontalLayout(saveButton, cancelButton, discardButton);
         horizontalLayout.setSpacing(true);
-        horizontalLayout.addComponent(new Button("Сохранить",event -> {
-            try {fieldGroup.commit();
-            window.close();}
-        catch (FieldGroup.CommitException ex) {ex.getStackTrace();}}));
-        horizontalLayout.addComponent(new Button("Отмена",event ->  window.close()));
-        horizontalLayout.addComponent(new Button("Сброс",event -> fieldGroup.discard()));
         this.addComponent(horizontalLayout);
     }
 }
